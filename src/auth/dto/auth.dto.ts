@@ -1,8 +1,11 @@
-import { IsString, IsNotEmpty, MinLength, IsEmail, IsInt, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, MinLength, IsEmail, IsInt, IsOptional, Matches } from 'class-validator';
 
 export class RegisterDto {
   @IsNotEmpty({ message: 'Tên đăng nhập không được để trống' })
   @IsString()
+  @Matches(/^[a-zA-Z0-9_]+$/, {
+    message: 'Tên đăng nhập viết liền không dấu, không chứa khoảng trắng và không chứa ký tự đặc biệt (chỉ cho phép dấu gạch dưới)'
+  })
   username: string;
 
   @IsNotEmpty({ message: 'Mật khẩu không được để trống' })
