@@ -20,10 +20,6 @@ export class RegisterDto {
   @IsEmail({}, { message: 'Email không hợp lệ' })
   email?: string;
 
-  @IsNotEmpty({ message: 'Vui lòng chọn Vai trò' })
-  @IsInt()
-  roleId: number;
-
   @IsNotEmpty({ message: 'Vui lòng chọn Phòng ban' })
   @IsInt()
   departmentId: number;

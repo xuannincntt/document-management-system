@@ -15,7 +15,7 @@ export class AuthService {
     ) { }
     async register(registerDto: RegisterDto) {
         try {
-            const { username, password, fullName, email, roleId, departmentId } = registerDto;
+            const { username, password, fullName, email, departmentId } = registerDto;
             const existingUser = await this.userRepository.findOne({ where: { Username: username } });
             if (existingUser) {
                 throw new BadRequestException('Tên đăng nhập đã tồn tại');
@@ -26,7 +26,7 @@ export class AuthService {
                 PasswordHash: hashedPassword,
                 FullName: fullName,
                 Email: email,
-                Role: { RoleId: roleId },
+                Role: { RoleId: 4 },
                 Department: { DepartmentId: departmentId },
             });
             await this.userRepository.save(newUser);

@@ -4,16 +4,17 @@ import { AuthService } from './auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../users/user.entity';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy],
   imports: [
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
       global: true,
-      secret: 'dms', // Thực tế nên dùng file .env
-      signOptions: { expiresIn: '1d' }, // Token có hạn trong 1 ngày
+      secret: 'dms',
+      signOptions: { expiresIn: '1d' },
     }),
   ],
 })
