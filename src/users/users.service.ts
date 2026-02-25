@@ -11,6 +11,11 @@ export class UsersService {
     findAll(): Promise<User[]> {
         return this.userRepository.find();
     }
+    async getAllUsers() {
+        return await this.userRepository.find({
+            relations: ['role', 'status'],
+        });
+    }
     async updateUserRole(userId: number, roleId: number) {
         const user = await this.userRepository.findOne({ where: { UserId: userId } });
         if (!user) throw new NotFoundException('Không tìm thấy người dùng');
