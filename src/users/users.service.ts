@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
 
+
+// Chưa viết file dto check dữ liệu đầu vào
 @Injectable()
 export class UsersService {
     constructor(

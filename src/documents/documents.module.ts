@@ -3,10 +3,11 @@ import { DocumentsService } from './documents.service';
 import { DocumentsController } from './documents.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Document } from './documents.entity';
+import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Document])],
+  imports: [TypeOrmModule.forFeature([Document]), CloudinaryModule],
   providers: [DocumentsService],
   controllers: [DocumentsController]
 })
-export class DocumentsModule {}
+export class DocumentsModule { }

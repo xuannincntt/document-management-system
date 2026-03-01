@@ -3,12 +3,12 @@
 //     Title NVARCHAR(255) NOT NULL, 
 //     Content NVARCHAR(MAX) NULL, 
 //     CreatedBy INT NOT NULL,
-//     StatusCode VARCHAR(50) NOT NULL DEFAULT 1,
+//     StatusId INT NOT NULL DEFAULT 1,
 //     CreatedAt DATETIME DEFAULT GETDATE(), 
 //     UpdatedAt DATETIME DEFAULT GETDATE(), 
-
+    
 //     CONSTRAINT FK_Documents_Users FOREIGN KEY (CreatedBy) REFERENCES Users(UserId),
-//     CONSTRAINT FK_Documents_Statuses FOREIGN KEY (StatusCode) REFERENCES DocumentStatuses(StatusCode)
+//     CONSTRAINT FK_Documents_Statuses FOREIGN KEY (StatusId) REFERENCES DocumentStatuses(StatusId)
 // ); 
 
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
@@ -33,7 +33,7 @@ export class Document {
 
   // Liên kết đến Trạng thái (DocumentStatus) theo StatusCode
   @ManyToOne(() => DocumentStatus)
-  @JoinColumn({ name: 'StatusCode', referencedColumnName: 'StatusCode' })
+  @JoinColumn({ name: 'StatusId', referencedColumnName: 'StatusId' })
   status: DocumentStatus;
 
   @CreateDateColumn({ name: 'CreatedAt' })
