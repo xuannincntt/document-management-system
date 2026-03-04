@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Param, Post, Query, UseGuards, Patch, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthService } from '../auth/auth.service';
 import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
 
 @Controller('users')
 @UseGuards(AuthGuard('jwt'), RolesGuard)

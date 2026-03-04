@@ -4,7 +4,7 @@ import { CreateDocumentDto } from './dto/create-document.dto';
 import { Document } from './documents.entity';
 import { DocumentHistory } from '../document-histories/document-histories.entity';
 import { DocumentAttachment } from '../document-attachments/document-attachments.entity';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import * as path from 'path';
 
 @Injectable()
