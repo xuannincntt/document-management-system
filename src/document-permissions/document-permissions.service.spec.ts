@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { WorkflowPermissionsService } from './workflow-permissions.service';
+import { DocumentPermissionsService } from './document-permissions.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { WorkflowPermission } from './workflow-permissions.entity';
+import { DocumentPermission } from './document-permissions.entity';
 import { ConflictException } from '@nestjs/common';
 
-describe('WorkflowPermissionsService', () => {
-  let service: WorkflowPermissionsService;
+describe('DocumentPermissionsService', () => {
+  let service: DocumentPermissionsService;
   let repository: any;
 
   const mockPermissionRepository = {
@@ -20,16 +20,16 @@ describe('WorkflowPermissionsService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        WorkflowPermissionsService,
+        DocumentPermissionsService,
         {
-          provide: getRepositoryToken(WorkflowPermission),
+          provide: getRepositoryToken(DocumentPermission),
           useValue: mockPermissionRepository,
         },
       ],
     }).compile();
 
-    service = module.get<WorkflowPermissionsService>(WorkflowPermissionsService);
-    repository = module.get(getRepositoryToken(WorkflowPermission));
+    service = module.get<DocumentPermissionsService>(DocumentPermissionsService);
+    repository = module.get(getRepositoryToken(DocumentPermission));
   });
 
   it('should be defined', () => {
@@ -40,12 +40,12 @@ describe('WorkflowPermissionsService', () => {
     it('should return all permissions with relations', async () => {
       mockPermissionRepository.find.mockResolvedValue([]);
       await service.getAllPermissions();
-      expect(mockPermissionRepository.find).toHaveBeenCalledWith({ relations: ['role', 'status'] });
+      expect(mockPermissionRepository.find).toHaveBeenCalledWith({ relations: ['role', 'status', 'action'] });
     });
   });
 
   describe('createPermission', () => {
-    const createDto = { roleId: 1, statusId: 1, allowedAction: 'READ' };
+    const createDto = { roleId: 1, statusId: 1, actionId: 1 };
 
     it('should create permission successfully', async () => {
       mockPermissionRepository.findOne.mockResolvedValue(null);
@@ -73,7 +73,7 @@ describe('WorkflowPermissionsService', () => {
   });
 
   describe('updatePermission', () => {
-    const updateDto = { roleId: 1, statusId: 1, allowedAction: 'UPDATE' };
+    const updateDto = { roleId: 1, statusId: 1, actionId: 2 };
 
     it('should update permission successfully', async () => {
       mockPermissionRepository.findOne.mockResolvedValue(null);
@@ -81,7 +81,11 @@ describe('WorkflowPermissionsService', () => {
 
       const result = await service.updatePermission(1, updateDto);
       expect(result.message).toBe('Cập nhật quyền thành công!');
-      expect(mockPermissionRepository.update).toHaveBeenCalledWith(1, updateDto);
+      expect(mockPermissionRepository.update).toHaveBeenCalledWith(1, {
+        role: { RoleId: updateDto.roleId } as any,
+        status: { StatusId: updateDto.statusId } as any,
+        action: { actionId: updateDto.actionId } as any,
+      });
     });
 
     it('should throw ConflictException if updated permission conflicts', async () => {

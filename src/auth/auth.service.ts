@@ -43,6 +43,11 @@ export class AuthService {
         if (!user) {
             throw new UnauthorizedException('Tài khoản không tồn tại');
         }
+
+        if (!user.IsActive) {
+            throw new UnauthorizedException('Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.');
+        }
+
         const isPasswordValid = await bcrypt.compare(loginDto.password, user.PasswordHash);
         if (!isPasswordValid) {
             throw new UnauthorizedException('Mật khẩu không chính xác');

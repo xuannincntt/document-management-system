@@ -10,17 +10,21 @@ import { User } from './users/user.entity';
 import { Department } from './departments/department.entity';
 import { Role } from './roles/role.entity';
 import { DocumentStatusesModule } from './document-statuses/document-statuses.module';
-import { WorkflowPermissionsModule } from './workflow-permissions/workflow-permissions.module';
+import { DocumentPermissionsModule } from './document-permissions/document-permissions.module';
+import { WorkflowActionsModule } from './workflow-actions/workflow-actions.module';
 import { DocumentsModule } from './documents/documents.module';
 import { DocumentAttachmentsModule } from './document-attachments/document-attachments.module';
 import { DocumentTasksModule } from './document-tasks/document-tasks.module';
 import { DocumentHistoriesModule } from './document-histories/document-histories.module';
 import { DocumentStatus } from './document-statuses/document-statuses.entity';
-import { WorkflowPermission } from './workflow-permissions/workflow-permissions.entity';
+import { DocumentPermission } from './document-permissions/document-permissions.entity';
+import { WorkflowAction } from './workflow-actions/workflow-action.entity';
 import { Document } from './documents/documents.entity';
 import { DocumentAttachment } from './document-attachments/document-attachments.entity';
 import { DocumentTask } from './document-tasks/document-tasks.entity';
 import { DocumentHistory } from './document-histories/document-histories.entity';
+import { AccountPermission } from './account-permissions/account-permission.entity';
+import { AccountPermissionsModule } from './account-permissions/account-permissions.module';
 
 @Module({
   imports: [
@@ -36,11 +40,13 @@ import { DocumentHistory } from './document-histories/document-histories.entity'
         Department,
         Role,
         DocumentStatus,
-        WorkflowPermission,
+        DocumentPermission,
+        WorkflowAction,
         Document,
         DocumentAttachment,
         DocumentTask,
-        DocumentHistory
+        DocumentHistory,
+        AccountPermission
       ],
       synchronize: false,
       options: {
@@ -53,11 +59,13 @@ import { DocumentHistory } from './document-histories/document-histories.entity'
     DepartmentsModule,
     RolesModule,
     DocumentStatusesModule,
-    WorkflowPermissionsModule,
+    DocumentPermissionsModule,
+    WorkflowActionsModule,
     DocumentsModule,
     DocumentAttachmentsModule,
     DocumentTasksModule,
     DocumentHistoriesModule,
+    AccountPermissionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { WorkflowPermissionsController } from './workflow-permissions.controller';
-import { WorkflowPermissionsService } from './workflow-permissions.service';
+import { DocumentPermissionsController } from './document-permissions.controller';
+import { DocumentPermissionsService } from './document-permissions.service';
 import { AuthGuard } from '@nestjs/passport';
 
-describe('WorkflowPermissionsController', () => {
-  let controller: WorkflowPermissionsController;
-  let service: WorkflowPermissionsService;
+describe('DocumentPermissionsController', () => {
+  let controller: DocumentPermissionsController;
+  let service: DocumentPermissionsService;
 
   const mockService = {
     createPermission: jest.fn(),
@@ -16,10 +16,10 @@ describe('WorkflowPermissionsController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [WorkflowPermissionsController],
+      controllers: [DocumentPermissionsController],
       providers: [
         {
-          provide: WorkflowPermissionsService,
+          provide: DocumentPermissionsService,
           useValue: mockService,
         },
       ],
@@ -28,8 +28,8 @@ describe('WorkflowPermissionsController', () => {
       .useValue({ canActivate: () => true })
       .compile();
 
-    controller = module.get<WorkflowPermissionsController>(WorkflowPermissionsController);
-    service = module.get<WorkflowPermissionsService>(WorkflowPermissionsService);
+    controller = module.get<DocumentPermissionsController>(DocumentPermissionsController);
+    service = module.get<DocumentPermissionsService>(DocumentPermissionsService);
   });
 
   it('should be defined', () => {
@@ -38,7 +38,7 @@ describe('WorkflowPermissionsController', () => {
 
   describe('create', () => {
     it('should call service.createPermission', async () => {
-      const dto = { roleId: 1, statusId: 1, allowedAction: 'READ' };
+      const dto = { roleId: 1, statusId: 1, actionId: 1 };
       await controller.create(dto);
       expect(mockService.createPermission).toHaveBeenCalledWith(dto);
     });
@@ -60,7 +60,7 @@ describe('WorkflowPermissionsController', () => {
 
   describe('updatePermission', () => {
     it('should call service.updatePermission', async () => {
-      const dto = { roleId: 1, statusId: 1, allowedAction: 'UPDATE' };
+      const dto = { roleId: 1, statusId: 1, actionId: 2 };
       await controller.updatePermission(1, dto);
       expect(mockService.updatePermission).toHaveBeenCalledWith(1, dto);
     });

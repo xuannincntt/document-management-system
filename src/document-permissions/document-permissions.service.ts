@@ -1,27 +1,27 @@
 import { Injectable, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { WorkflowPermission } from './workflow-permissions.entity';
+import { DocumentPermission } from './document-permissions.entity';
 import { Repository } from 'typeorm';
-import { CreateWorkflowPermissionDto } from './dto/create-workflow-permission.dto';
+import { CreateDocumentPermissionDto } from './dto/create-document-permission.dto';
 
 @Injectable()
-export class WorkflowPermissionsService {
+export class DocumentPermissionsService {
     constructor(
-        @InjectRepository(WorkflowPermission)
-        private permissionRepository: Repository<WorkflowPermission>,
+        @InjectRepository(DocumentPermission)
+        private permissionRepository: Repository<DocumentPermission>,
     ) { }
     async getAllPermissions() {
         return await this.permissionRepository.find({
-            relations: ['role', 'status'],
+            relations: ['role', 'status', 'action'],
         });
     }
-    async createPermission(createDto: CreateWorkflowPermissionDto) {
-        const { roleId, statusId, allowedAction } = createDto;
+    async createPermission(createDto: CreateDocumentPermissionDto) {
+        const { roleId, statusId, actionId } = createDto;
         const existingPermission = await this.permissionRepository.findOne({
             where: {
                 role: { RoleId: roleId },
                 status: { StatusId: statusId },
-                allowedAction: allowedAction,
+                action: { actionId: actionId },
             },
         });
         if (existingPermission) {
@@ -30,7 +30,7 @@ export class WorkflowPermissionsService {
         const newPermission = this.permissionRepository.create({
             role: { RoleId: roleId },
             status: { StatusId: statusId },
-            allowedAction: allowedAction,
+            action: { actionId: actionId },
         });
         await this.permissionRepository.save(newPermission);
         return {
@@ -44,19 +44,23 @@ export class WorkflowPermissionsService {
             message: 'Xóa quyền thành công!',
         };
     }
-    async updatePermission(id: number, updateDto: CreateWorkflowPermissionDto) {
-        const { roleId, statusId, allowedAction } = updateDto;
+    async updatePermission(id: number, updateDto: CreateDocumentPermissionDto) {
+        const { roleId, statusId, actionId } = updateDto;
         const existingPermission = await this.permissionRepository.findOne({
             where: {
                 role: { RoleId: roleId },
                 status: { StatusId: statusId },
-                allowedAction: allowedAction,
+                action: { actionId: actionId },
             },
         });
         if (existingPermission) {
             throw new ConflictException('Quyền này đã được thiết lập từ trước!');
         }
-        await this.permissionRepository.update(id, updateDto);
+        await this.permissionRepository.update(id, {
+            role: { RoleId: roleId } as any,
+            status: { StatusId: statusId } as any,
+            action: { actionId: actionId } as any,
+        });
         return {
             message: 'Cập nhật quyền thành công!',
         };
